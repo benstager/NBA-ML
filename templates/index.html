@@ -3,17 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flask App</title>
+    <title>Input Form</title>
 </head>
 <body>
-    <h1>{{ message }}</h1>
-    <h2>DataFrame Display</h2>
-    {{ table | safe }}
-
-    <form action="/" method="post">
-        <label for="user_input">Enter your name:</label>
-        <input type="text" id="user_input" name="user_input">
-        <button type="submit">Submit</button>
+    <h1>Input Form</h1>
+    <form action="/" method="POST">
+        <label for="input_data">Enter Data:</label><br>
+        <input type="text" id="input_data" name="input_data"><br><br>
+        <input type="submit" value="Submit">
     </form>
 </body>
 </html>
