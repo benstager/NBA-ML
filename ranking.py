@@ -10,20 +10,25 @@ from joblib import Parallel, delayed
 import pandas as pd
 from nba_api.stats.endpoints import leaguegamefinder
 import numpy as np
+import psycopg2
+
+# Define the database URL
+DATABASE_TYPE = 'postgresql'
+DBAPI = 'psycopg2'
+ENDPOINT = 'nba-ml-database.cdyyu2ws4399.us-east-2.rds.amazonaws.com'  # e.g., 'mydbinstance.c9akciq32.rds.amazonaws.com'
+USER = 'postgres'
+PASSWORD = 'pacman561'
+PORT = 5432
+DATABASE = 'postgresNBA'
+
+DATABASE_URL = f"{DATABASE_TYPE}+{DBAPI}://{USER}:{PASSWORD}@{ENDPOINT}:{PORT}/{DATABASE}"
+
+# Create a SQLAlchemy engine
+engine = create_engine(DATABASE_URL)
 
 def find_games_by_year(all_games_df, date):
     games_year = all_games_df[all_games_df['GAME_DATE'] == date]
     return games_year
-
-# Database connection details
-db_username = 'postgres'
-db_password = 'pacman561'
-db_host = 'localhost'
-db_port = '5433'
-db_name = 'USER_RANKINGS'
-
-# Create a SQLAlchemy engine
-engine = create_engine(f'postgresql+psycopg2://{db_username}:{db_password}@{db_host}:{db_port}/{db_name}')
 
 # necessary data
 all_team_ids = [teams.teams[i][0] for i in range(len(teams.teams))]
@@ -115,5 +120,5 @@ ratings_session = pd.DataFrame({
     'Date of rating': timestamp
 })
 
-ratings_session.to_sql('RATINGS_TEST', engine, index=False, if_exists='append')
+ratings_session.to_sql("user_rankings_new", engine, schema='public', index=False, if_exists='append')
 print('Thanks for helping!')
